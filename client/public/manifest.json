@@ -1,0 +1,20 @@
+{
+  "short_name": "eznstall",
+  "name": "EZNSTALL",
+  "icons": [
+    {
+      "src": "assets/images/eznstall-logo-small.png",
+      "type": "image/png",
+      "sizes": "306x281"
+    },
+    {
+      "src": "assets/images/eznstall-logo-large.png",
+      "type": "image/png",
+      "sizes": "611x158"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
