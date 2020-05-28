@@ -4,7 +4,7 @@ nav {
   margin: 0;
   overflow: hidden;
   background: #000c;
-  backdrop-filter: blur(20px) saturate(300%);
+  backdrop-filter: blur(10px) saturate(300%);
   box-shadow: 0 3px 5px -4px;
 }
 

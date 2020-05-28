@@ -9,7 +9,9 @@ function App() {
     <Router>
       <div className="App">
         <Header />
-        <main></main>
+        <main>
+          <p>lorem ipsum dolar sit lorem ipsum dolar sit lorem ipsum dolar sit lorem ipsum dolar sit lorem ipsum dolar sit lorem ipsum dolar sit</p>
+        </main>
       </div>
     </Router>
   );

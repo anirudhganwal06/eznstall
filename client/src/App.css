@@ -9,6 +9,10 @@ html {
   box-sizing: border-box;
 }
 
+main {
+  padding-top: 50px;
+}
+
 /******************** USEFUL CLASSES *********************/
 
 .v-center {
