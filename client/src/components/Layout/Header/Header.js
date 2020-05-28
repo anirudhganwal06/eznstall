@@ -1,14 +1,25 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import styles from "./Header.module.css";
+import links from "./Links";
 
 const Header = () => {
   const [show, setShow] = useState(false);
+
+  // Create a array of all navbar links imported from ./Links file
+  let linksJSX = [];
+  for (let link of links) {
+    console.log(link)
+    linksJSX.push(<Link key={link.name} to={link.link}>{link.name}</Link>);
+  }
+
   return (
     <nav className={show ? styles.show : ""}>
       <div className={styles["nav-content"]}>
-        <a href="" className={styles["logo"]}>
+        <Link to="/" className={styles["logo"]}>
           <img src="assets/images/eznstall-logo-small.png" height="20" />
-        </a>
+        </Link>
 
         <div className={styles["nav-icon"]} onClick={() => setShow(!show)}>
           <div className={`${styles["bar"]} ${styles["one"]}`}></div>
@@ -16,12 +27,7 @@ const Header = () => {
         </div>
 
         <div className={styles["nav-links"]}>
-          <a href="#">Home</a>
-          <a href="#">Products</a>
-          <a href="#">FAQ</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
-          <a href="#">Login</a>
+          {linksJSX}
         </div>
 
         <svg
