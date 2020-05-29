@@ -1,16 +1,18 @@
 /*********************** GENERAL *************************/
+
 html {
-  font-family: Roboto, sans-serif;
+  overflow-x: hidden;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Ubuntu';
 }
 
 main {
-  padding-top: 50px;
+  padding-top: 44px;
 }
 
 /******************** USEFUL CLASSES *********************/
@@ -23,4 +25,9 @@ main {
 
 .blur-bg {
   backdrop-filter: blur(10px);
+}
+
+.page-heading {
+  font-size: 5em;
+  margin: 20px 0;
 }

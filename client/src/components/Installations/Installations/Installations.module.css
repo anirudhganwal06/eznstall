@@ -1,0 +1,9 @@
+.installation-summary {
+    padding: 2em 5em;
+    transition: 400ms;
+}
+
+.installation-summary:hover {
+    box-shadow: 10px 10px 2px #555;
+    transform: translate(-5px, -5px);
+}

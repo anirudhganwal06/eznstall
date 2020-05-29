@@ -10,7 +10,6 @@ const Header = () => {
   // Create a array of all navbar links imported from ./Links file
   let linksJSX = [];
   for (let link of links) {
-    console.log(link)
     linksJSX.push(<Link key={link.name} to={link.link}>{link.name}</Link>);
   }
 
@@ -18,7 +17,7 @@ const Header = () => {
     <nav className={show ? styles.show : ""}>
       <div className={styles["nav-content"]}>
         <Link to="/" className={styles["logo"]}>
-          <img src="assets/images/eznstall-logo-small.png" height="20" />
+          <img src="assets/images/eznstall-logo-small.png" height="20" alt="Logo" />
         </Link>
 
         <div className={styles["nav-icon"]} onClick={() => setShow(!show)}>

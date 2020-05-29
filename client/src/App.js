@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import "./App.css";
 import Header from "./components/Layout/Header/Header";
+import Landing from "./components/Landing/Landing";
+import Installations from "./components/Installations/Installations/Installations";
 
 function App() {
   return (
@@ -10,7 +12,8 @@ function App() {
       <div className="App">
         <Header />
         <main>
-          <p>lorem ipsum dolar sit lorem ipsum dolar sit lorem ipsum dolar sit lorem ipsum dolar sit lorem ipsum dolar sit lorem ipsum dolar sit</p>
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/installations" component={Installations} />
         </main>
       </div>
     </Router>
