@@ -6,6 +6,7 @@ import Header from "./components/Layout/Header/Header";
 import Landing from "./components/Landing/Landing";
 import Installations from "./components/Installations/Installations";
 import Installation from "./components/Installation/Installation";
+import Write from "./components/Write/Write";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route exact path="/" component={Landing} />
           <Route exact path="/installations" component={Installations} />
           <Route exact path="/installation" component={Installation} />
+          <Route exact path="/write" component={Write} />
         </main>
       </div>
     </Router>
