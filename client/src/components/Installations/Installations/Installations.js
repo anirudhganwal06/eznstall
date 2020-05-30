@@ -21,6 +21,7 @@ const Installations = (props) => {
         style={{
           backgroundColor: randomColor,
         }}
+        onClick={() => props.history.push('/installation')}
       >
         <h1>Google Chrome</h1>
         <p>

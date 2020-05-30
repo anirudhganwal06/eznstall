@@ -1,6 +1,7 @@
 .installation-summary {
     padding: 2em 5em;
     transition: 400ms;
+    cursor: pointer;
 }
 
 .installation-summary:hover {

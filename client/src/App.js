@@ -5,6 +5,7 @@ import "./App.css";
 import Header from "./components/Layout/Header/Header";
 import Landing from "./components/Landing/Landing";
 import Installations from "./components/Installations/Installations/Installations";
+import Installation from "./components/Installations/Installation/Installation";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <main>
           <Route exact path="/" component={Landing} />
           <Route exact path="/installations" component={Installations} />
+          <Route exact path="/installation" component={Installation} />
         </main>
       </div>
     </Router>
