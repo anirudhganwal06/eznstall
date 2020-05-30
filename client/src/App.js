@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Layout/Header/Header";
 import Landing from "./components/Landing/Landing";
-import Installations from "./components/Installations/Installations/Installations";
-import Installation from "./components/Installations/Installation/Installation";
+import Installations from "./components/Installations/Installations";
+import Installation from "./components/Installation/Installation";
 
 function App() {
   return (
