@@ -17,3 +17,47 @@ textarea {
 .sub-section:nth-child(odd) {
   background-color: #ffc107;
 }
+
+.add-remove-step-container {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  padding: 5px;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+  color: #fff0;
+  transform: scaleY(0.25);
+  transition: 200ms linear;
+}
+
+.add-remove-step-container:hover {
+  transform: scaleY(1);
+  color: #fff;
+}
+
+.add-step {
+  position: absolute;
+  width: 80%;
+  left: 0;
+  background-color: #0a0;
+}
+
+.add-step:hover {
+  background-color: #0c0;
+}
+
+.remove-step {
+  position: absolute;
+  width: 20%;
+  right: 0;
+  background-color: #a00;
+}
+
+.remove-step:hover {
+  background-color: #c00;
+}
+
+.add-step-last {
+  width: 100%;
+}

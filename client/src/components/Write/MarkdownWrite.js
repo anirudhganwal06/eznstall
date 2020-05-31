@@ -1,48 +1,35 @@
 import React from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
+import styles from "./Write.module.css";
+
 const MarkdownWrite = (props) => {
-  const tutorialJSX = [];
-  tutorialJSX.push(
-    <TextareaAutosize
-        key="step-0"
-        className="w-100"
-        placeholder="Step 1"
-        name="step"
-        data-step-number="0"
-        onChange={props.onChange}
-      />
-  );
-  tutorialJSX.push(
-    <TextareaAutosize
-        key="step-1"
-        className="w-100"
-        placeholder="Step 2"
-        name="step"
-        data-step-number="1"
-        onChange={props.onChange}
-      />
-  );
-  tutorialJSX.push(
-    <TextareaAutosize
-        key="step-2"
-        className="w-100"
-        placeholder="Step 3"
-        name="step"
-        data-step-number="2"
-        onChange={props.onChange}
-      />
-  );
-  tutorialJSX.push(
-    <TextareaAutosize
-        key="step-3"
-        className="w-100"
-        placeholder="Step 4"
-        name="step"
-        data-step-number="3"
-        onChange={props.onChange}
-      />
-  );
+  const stepsJSX = [];
+  for (let i in props.tutorial.steps) {
+    stepsJSX.push(
+      <React.Fragment>
+        <div className={styles["add-remove-step-container"]}>
+          <div className={styles["add-step"]} onClick={() => props.addStep(i)}>
+            Add
+          </div>
+          <div
+            className={styles["remove-step"]}
+            onClick={() => props.removeStep(i)}
+          >
+            Remove
+          </div>
+        </div>
+        <TextareaAutosize
+          key={i}
+          className="w-100"
+          placeholder={"Step " + (+i + 1)}
+          name="step"
+          onChange={(e) => props.onChange(e, i)}
+          value={props.tutorial.steps[i]}
+        />
+      </React.Fragment>
+    );
+  }
 
   return (
     <React.Fragment>
@@ -55,7 +42,15 @@ const MarkdownWrite = (props) => {
         onChange={props.onChange}
       />
       <b>Steps</b>
-      {tutorialJSX}
+      {stepsJSX}
+      <div className={styles["add-remove-step-container"]}>
+        <div
+          className={`${styles["add-step"]} ${styles["add-step-last"]}`}
+          onClick={() => props.addStep(props.tutorial.steps.length)}
+        >
+          Add
+        </div>
+      </div>
       <b>Conclusion</b>
       <TextareaAutosize
         key="conclusion"
