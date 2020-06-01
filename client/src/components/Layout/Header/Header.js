@@ -3,50 +3,67 @@ import { Link, useHistory } from "react-router-dom";
 
 import styles from "./Header.module.css";
 import links from "./Links";
-// import { useSelector } from "react-redux";
-import { useFirebase } from "react-redux-firebase";
+import { useSelector } from "react-redux";
+import { useFirebase, isLoaded } from "react-redux-firebase";
 
 const Header = (props) => {
   const [show, setShow] = useState(false);
 
-  // const auth = useSelector((state) => state.firebase.auth);
+  const auth = useSelector((state) => state.firebase.auth);
 
   const firebase = useFirebase();
   const history = useHistory();
 
-  /* eslint-disable no-unused-vars */
   const login = async () => {
-    firebase
-      .login({
-        provider: "google",
-        type: "popup",
-      })
-      .then((res) => {
-        history.push("/");
-      });
+    await firebase.login({
+      provider: "google",
+      type: "popup",
+    });
+    history.push("/");
   };
 
+  const logout = async () => {
+    console.log('logging out')
+    await firebase.logout();
+    history.push("/");
+  };
 
   // Create a array of all navbar links imported from ./Links file
   let linksJSX = [];
-  for (let link of links) {
-    if (link.loadComponent) {
-      linksJSX.push(
-        <Link className={styles.link} key={link.name} to={link.link}>
-          {link.name}
-        </Link>
-      );
-    } else {
-      switch(link.call) {
-        case 'login':
-          linksJSX.push(
-            <span className={styles.link} key={link.name} onClick={login}>
-              {link.name}
-            </span>
-          );
-          break;
-        default:
-          console.warn('Cannot identify link.call')
+  let linksType = "signedOut";
+
+  if (!isLoaded(auth)) {
+    linksType = null;
+  } else if (isLoaded(auth) && !auth.isEmpty) {
+    linksType = "signedIn";
+  }
+  console.log(linksType)
+
+  if (linksType) {
+    for (let link of links[linksType]) {
+      if (link.loadComponent) {
+        linksJSX.push(
+          <Link className={styles.link} key={link.name} to={link.link}>
+            {link.name}
+          </Link>
+        );
+      } else {
+        let callFn;
+        switch (link.call) {
+          case "login":
+            callFn = login;
+            break;
+          case "logout":
+            callFn = logout;
+            break;
+          default:
+            console.warn("Cannot identify link.call");
+        }
+        linksJSX.push(
+          <span className={styles.link} key={link.name} onClick={callFn}>
+            {link.name}
+          </span>
+        );
       }
     }
   }
