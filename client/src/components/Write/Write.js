@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import "./Write.module.css";
 import MarkdownWrite from "./MarkdownWrite";
@@ -32,10 +32,6 @@ const Write = (props) => {
     newTutorial.steps.splice(i, 1);
     setTutorial(newTutorial);
   };
-
-  useEffect(() => {
-    console.log(tutorial);
-  }, [tutorial]);
 
   return (
     <React.Fragment>

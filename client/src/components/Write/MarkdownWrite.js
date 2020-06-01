@@ -7,7 +7,7 @@ const MarkdownWrite = (props) => {
   const stepsJSX = [];
   for (let i in props.tutorial.steps) {
     stepsJSX.push(
-      <React.Fragment>
+      <React.Fragment key={i}>
         <div className={styles["add-remove-step-container"]}>
           <div className={styles["add-step"]} onClick={() => props.addStep(i)}>
             Add
@@ -20,7 +20,6 @@ const MarkdownWrite = (props) => {
           </div>
         </div>
         <TextareaAutosize
-          key={i}
           className="w-100"
           placeholder={"Step " + (+i + 1)}
           name="step"

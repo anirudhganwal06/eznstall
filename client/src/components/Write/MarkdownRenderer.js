@@ -4,11 +4,11 @@ import styles from "./Write.module.css";
 
 const MarkdownRenderer = (props) => {
   const tutorialStepsJSX = [];
-  for (let step of props.tutorial.steps) {
+  for (let i in props.tutorial.steps) {
     tutorialStepsJSX.push(
-      <div className={`row no-gutters ${styles["sub-section"]}`}>
+      <div key={i} className={`row no-gutters ${styles["sub-section"]}`}>
         <div className="col-6">
-          <ReactMarkdown source={step}></ReactMarkdown>
+          <ReactMarkdown source={props.tutorial.steps[i]}></ReactMarkdown>
         </div>
         <div className="col-6">
           <img className="w-100" src="assets/images/dummySS.png" alt="Dummy" />
