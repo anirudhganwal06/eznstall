@@ -1,23 +1,65 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import styles from "./Header.module.css";
 import links from "./Links";
+// import { useSelector } from "react-redux";
+import { useFirebase } from "react-redux-firebase";
 
-const Header = () => {
+const Header = (props) => {
   const [show, setShow] = useState(false);
+
+  // const auth = useSelector((state) => state.firebase.auth);
+
+  const firebase = useFirebase();
+  const history = useHistory();
+
+  /* eslint-disable no-unused-vars */
+  const login = async () => {
+    firebase
+      .login({
+        provider: "google",
+        type: "popup",
+      })
+      .then((res) => {
+        history.push("/");
+      });
+  };
+
 
   // Create a array of all navbar links imported from ./Links file
   let linksJSX = [];
   for (let link of links) {
-    linksJSX.push(<Link key={link.name} to={link.link}>{link.name}</Link>);
+    if (link.loadComponent) {
+      linksJSX.push(
+        <Link className={styles.link} key={link.name} to={link.link}>
+          {link.name}
+        </Link>
+      );
+    } else {
+      switch(link.call) {
+        case 'login':
+          linksJSX.push(
+            <span className={styles.link} key={link.name} onClick={login}>
+              {link.name}
+            </span>
+          );
+          break;
+        default:
+          console.warn('Cannot identify link.call')
+      }
+    }
   }
 
   return (
     <nav className={show ? styles.show : ""}>
       <div className={styles["nav-content"]}>
-        <Link to="/" className={styles["logo"]}>
-          <img src="assets/images/eznstall-logo-small.png" height="20" alt="Logo" />
+        <Link to="/" className={`${styles["logo"]} ${styles.link}`}>
+          <img
+            src="assets/images/eznstall-logo-small.png"
+            height="20"
+            alt="Logo"
+          />
         </Link>
 
         <div className={styles["nav-icon"]} onClick={() => setShow(!show)}>
@@ -25,9 +67,7 @@ const Header = () => {
           <div className={`${styles["bar"]} ${styles["two"]}`}></div>
         </div>
 
-        <div className={styles["nav-links"]}>
-          {linksJSX}
-        </div>
+        <div className={styles["nav-links"]}>{linksJSX}</div>
 
         <svg
           className={styles["search-icon"]}

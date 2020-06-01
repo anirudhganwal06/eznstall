@@ -1,26 +1,32 @@
 export default [
     {
         name: 'Home',
-        link: '/'
+        link: '/',
+        loadComponent: true
     },
     {
         name: 'Installations',
-        link: '/installations'
+        link: '/installations',
+        loadComponent: true
     },
     {
         name: 'About',
-        link: '/about'
+        link: '/about',
+        loadComponent: true
     },
     {
         name: 'FAQs',
-        link: 'faqs'
+        link: 'faqs',
+        loadComponent: true
     },
     {
         name: 'Write',
-        link: '/write'
+        link: '/write',
+        loadComponent: true
     },
     {
         name: 'Login',
-        link: '/login',
+        call: 'login',
+        loadComponent: false
     },
 ];
