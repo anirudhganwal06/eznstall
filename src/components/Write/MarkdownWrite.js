@@ -15,7 +15,7 @@ const MarkdownWrite = (props) => {
 					</div>
 					<div
 						className={styles['remove-step']}
-						onClick={() => props.dispatch({ type: 'REMOVE_STEP', i })}
+						onClick={() => props.dispatch({ type: 'REMOVE_STEP', i: +i })}
 					>
             Remove
 					</div>
@@ -27,7 +27,7 @@ const MarkdownWrite = (props) => {
 							placeholder={'Step ' + (+i + 1)}
 							name="step"
 							data-type="markdown"
-							onChange={(e) => props.dispatch({ type: 'CHANGE_STEP', dataType: 'markdown', value: e.target.value, i })}
+							onChange={(e) => props.dispatch({ type: 'CHANGE_STEP', dataType: 'markdown', value: e.target.value, i: +i })}
 							value={props.tutorial.steps[i].markdown}
 						/>
 					</div>
@@ -37,9 +37,11 @@ const MarkdownWrite = (props) => {
 							data-type="image"
 							withIcon={true}
 							buttonText='Choose screenshot'
-							onChange={(e) => props.onChange(e, i)}
-							imgExtension={['.jpg', '.gif', '.png', '.gif']}
+							onChange={images => props.dispatch({ type: 'CHANGE_STEP', dataType: 'image', value: images[0], i: +i })}
+							imgExtension={['.jpg', '.jpeg', '.png']}
 							maxFileSize={5242880}
+							singleImage={true}
+							label="Screenshot for this step"
 						/>
 					</div>
 				</div>
@@ -49,13 +51,29 @@ const MarkdownWrite = (props) => {
 
 	return (
 		<React.Fragment>
+			<b>Name of the software</b>
+			<input
+				className="w-100"
+				placeholder="Name of the software"
+				name="name"
+				onChange={e => props.dispatch({ type: 'HANDLE_CHANGE', name: 'name', value: e.target.value })}
+				value={props.tutorial.name}
+			/>
+			<b>Version of the software</b>
+			<input
+				className="w-100"
+				placeholder="Version of the software"
+				name="version"
+				onChange={e => props.dispatch({ type: 'HANDLE_CHANGE', name: 'version', value: e.target.value })}
+				value={props.tutorial.version}
+			/>
 			<b>Introduction</b>
 			<TextareaAutosize
-				key="introduction"
 				className="w-100"
 				placeholder="Introduction"
 				name="introduction"
 				onChange={e => props.dispatch({ type: 'HANDLE_CHANGE', name: 'introduction', value: e.target.value })}
+				value={props.tutorial.introduction}
 			/>
 			<b>Steps</b>
 			{stepsJSX}
@@ -69,11 +87,11 @@ const MarkdownWrite = (props) => {
 			</div>
 			<b>Conclusion</b>
 			<TextareaAutosize
-				key="conclusion"
 				className="w-100"
 				placeholder="Conclusion"
 				name="conclusion"
 				onChange={e => props.dispatch({ type: 'HANDLE_CHANGE', name: 'conclusion', value: e.target.value })}
+				value={props.tutorial.conclusion}
 			/>
 		</React.Fragment>
 	);

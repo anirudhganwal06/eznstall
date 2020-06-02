@@ -3,15 +3,16 @@ import React, { useReducer } from 'react';
 import './Write.module.css';
 import MarkdownWrite from './MarkdownWrite';
 import MarkdownRenderer from './MarkdownRenderer';
+import { useFirebase, useFirestore } from 'react-redux-firebase';
 
 const Write = () => {
-
 	const reducer = (state, action) => {
+		console.log(action);
 		const newSteps = [...state.steps];
-		if (action.type === 'ADD_STEP' || action.type === 'REMOVE_STEP' || action.type === 'CHANGE_STEP') {
+		if (action.type === 'ADD_STEP' || action.type === 'REMOVE_STEP' || action.type === 'CHANGE_STEP' || action.type === 'ADD_IMAGE') {
 			switch(action.type) {
 			case 'ADD_STEP': 
-				newSteps.splice(action.i, 0, '');
+				newSteps.splice(action.i, 0, {});
 				break;
 			case 'REMOVE_STEP': 
 				newSteps.splice(action.i, 1);
@@ -41,6 +42,8 @@ const Write = () => {
 	};
 
 	const initialState = {
+		name: '',
+		version: '',
 		introduction: '',
 		steps: [{
 			markdown: '',
@@ -50,6 +53,18 @@ const Write = () => {
 	};
 
 	const [tutorial, dispatch] = useReducer(reducer, initialState);
+
+	const firebase = useFirebase();
+	const firestore = useFirestore();
+
+	const publish = async() => {
+		const storageRef = firebase.storage().ref();
+		const imagesRef = storageRef.child('images/');
+		const image = tutorial.steps[0].image;
+		console.log(image);
+		const snapshot = await imagesRef.put(image);
+		console.log(snapshot);
+	};
 
 	return (
 		<React.Fragment>
@@ -72,7 +87,7 @@ const Write = () => {
 						<button className="btn btn-block btn-success">Save as Draft</button>
 					</div>
 					<div className="col-12 my-2">
-						<button className="btn btn-block btn-primary">Publish</button>
+						<button className="btn btn-block btn-primary" onClick={publish}>Publish</button>
 					</div>
 				</div>
 			</section>

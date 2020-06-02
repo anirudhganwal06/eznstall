@@ -5,6 +5,12 @@ textarea {
   min-height: 180px;
 }
 
+input {
+  padding: 10px;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
 .markdown-renderer {
   width: 100%;
   zoom: 0.33;
