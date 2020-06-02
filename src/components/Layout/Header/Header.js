@@ -37,7 +37,6 @@ const Header = () => {
 	} else if (isLoaded(auth) && !auth.isEmpty) {
 		linksType = 'signedIn';
 	}
-	console.log(linksType);
 
 	if (linksType) {
 		for (let link of links[linksType]) {

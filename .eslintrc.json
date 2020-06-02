@@ -50,6 +50,10 @@
             "warn",
             "never"
         ],
+        "object-curly-spacing": [
+            "warn",
+            "always"
+        ],
         "space-before-blocks": "warn",
         "space-in-parens": "warn",
         "space-infix-ops": "warn",

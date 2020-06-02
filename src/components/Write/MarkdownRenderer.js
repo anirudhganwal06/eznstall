@@ -8,7 +8,7 @@ const MarkdownRenderer = (props) => {
 		tutorialStepsJSX.push(
 			<div key={i} className={`row no-gutters ${styles['sub-section']}`}>
 				<div className="col-6">
-					<ReactMarkdown source={props.tutorial.steps[i]}></ReactMarkdown>
+					<ReactMarkdown source={props.tutorial.steps[i].markdown}></ReactMarkdown>
 				</div>
 				<div className="col-6">
 					<img className="w-100" src="assets/images/dummySS.png" alt="Dummy" />

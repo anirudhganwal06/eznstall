@@ -1,38 +1,53 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 
 import './Write.module.css';
 import MarkdownWrite from './MarkdownWrite';
 import MarkdownRenderer from './MarkdownRenderer';
 
 const Write = () => {
-	const [introduction, setIntroduction] = useState('');
-	const [tutorial, setTutorial] = useState({
-		introduction: '',
-		steps: [{}],
-		conclusion: '',
-	});
 
-	const onChange = (e, i) => {
-		const newTutorial = { ...tutorial };
-		if (e.target.name === 'step') {
-			newTutorial.steps[i] = e.target.value;
+	const reducer = (state, action) => {
+		const newSteps = [...state.steps];
+		if (action.type === 'ADD_STEP' || action.type === 'REMOVE_STEP' || action.type === 'CHANGE_STEP') {
+			switch(action.type) {
+			case 'ADD_STEP': 
+				newSteps.splice(action.i, 0, '');
+				break;
+			case 'REMOVE_STEP': 
+				newSteps.splice(action.i, 1);
+				break;
+			case 'CHANGE_STEP': 
+				newSteps[action.i][action.dataType] = action.value;
+				break;
+			}
+			return {
+				...state,
+				steps: newSteps
+			};
 		} else {
-			newTutorial[e.target.name] = e.target.value;
+			switch(action.type) {
+			case 'HANDLE_CHANGE':
+				return {
+					...state,
+					[action.name]: action.value
+				};
+			default:
+				return { ...state };
+			}
 		}
-		setTutorial(newTutorial);
+	
 	};
 
-	const addStep = (i) => {
-		const newTutorial = { ...tutorial };
-		newTutorial.steps.splice(i, 0, '');
-		setTutorial(newTutorial);
+	const initialState = {
+		introduction: '',
+		steps: [{
+			markdown: '',
+			image: ''
+		}],
+		conclusion: ''
 	};
 
-	const removeStep = (i) => {
-		const newTutorial = { ...tutorial };
-		newTutorial.steps.splice(i, 1);
-		setTutorial(newTutorial);
-	};
+	const [tutorial, dispatch] = useReducer(reducer, initialState);
 
 	return (
 		<React.Fragment>
@@ -44,9 +59,7 @@ const Write = () => {
 					<div className="col-8">
 						<MarkdownWrite
 							tutorial={tutorial}
-							onChange={onChange}
-							addStep={addStep}
-							removeStep={removeStep}
+							dispatch={dispatch}
 						/>
 						<p className="text-muted">Everything you write above will be rendered as Markdown</p>
 					</div>

@@ -10,12 +10,12 @@ const MarkdownWrite = (props) => {
 		stepsJSX.push(
 			<React.Fragment key={i}>
 				<div className={styles['add-remove-step-container']}>
-					<div className={styles['add-step']} onClick={() => props.addStep(i)}>
+					<div className={styles['add-step']} onClick={() => props.dispatch({ type: 'ADD_STEP', i: +i })}>
             Add
 					</div>
 					<div
 						className={styles['remove-step']}
-						onClick={() => props.removeStep(i)}
+						onClick={() => props.dispatch({ type: 'REMOVE_STEP', i })}
 					>
             Remove
 					</div>
@@ -26,15 +26,18 @@ const MarkdownWrite = (props) => {
 							className="w-100"
 							placeholder={'Step ' + (+i + 1)}
 							name="step"
-							onChange={(e) => props.onChange(e, i)}
-							value={props.tutorial.steps[i]}
+							data-type="markdown"
+							onChange={(e) => props.dispatch({ type: 'CHANGE_STEP', dataType: 'markdown', value: e.target.value, i })}
+							value={props.tutorial.steps[i].markdown}
 						/>
 					</div>
 					<div className="col-3">
-						<ImageUploader 
+						<ImageUploader
+							name="step"
+							data-type="image"
 							withIcon={true}
 							buttonText='Choose screenshot'
-							onChange={this}
+							onChange={(e) => props.onChange(e, i)}
 							imgExtension={['.jpg', '.gif', '.png', '.gif']}
 							maxFileSize={5242880}
 						/>
@@ -52,14 +55,14 @@ const MarkdownWrite = (props) => {
 				className="w-100"
 				placeholder="Introduction"
 				name="introduction"
-				onChange={props.onChange}
+				onChange={e => props.dispatch({ type: 'HANDLE_CHANGE', name: 'introduction', value: e.target.value })}
 			/>
 			<b>Steps</b>
 			{stepsJSX}
 			<div className={styles['add-remove-step-container']}>
 				<div
 					className={`${styles['add-step']} ${styles['add-step-last']}`}
-					onClick={() => props.addStep(props.tutorial.steps.length)}
+					onClick={() => props.dispatch({ type: 'ADD_STEP', i: props.tutorial.steps.length })}
 				>
           Add
 				</div>
@@ -70,7 +73,7 @@ const MarkdownWrite = (props) => {
 				className="w-100"
 				placeholder="Conclusion"
 				name="conclusion"
-				onChange={props.onChange}
+				onChange={e => props.dispatch({ type: 'HANDLE_CHANGE', name: 'conclusion', value: e.target.value })}
 			/>
 		</React.Fragment>
 	);
