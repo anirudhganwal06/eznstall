@@ -19,6 +19,8 @@ const Write = () => {
 			case 'CHANGE_STEP': 
 				newSteps[action.i][action.dataType] = action.value;
 				break;
+			default:
+				return { ...state };
 			}
 			return {
 				...state,
