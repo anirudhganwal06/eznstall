@@ -5,9 +5,10 @@ import MarkdownWrite from './MarkdownWrite';
 import MarkdownRenderer from './MarkdownRenderer';
 
 const Write = () => {
+	const [introduction, setIntroduction] = useState('');
 	const [tutorial, setTutorial] = useState({
 		introduction: '',
-		steps: [''],
+		steps: [{}],
 		conclusion: '',
 	});
 

@@ -39,6 +39,7 @@
             "warn",
             "always"
         ],
+        "no-unused-vars": "warn",
         "no-multi-spaces": "warn",
         "block-spacing": "warn",
         "space-before-function-paren": [
@@ -55,5 +56,6 @@
         "spaced-comment": "warn",
         // React
         "react/prop-types": "off"
-    }
+    },
+    "root": true
 }

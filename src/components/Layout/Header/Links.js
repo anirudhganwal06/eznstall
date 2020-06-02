@@ -21,11 +21,6 @@ export default {
 			loadComponent: true,
 		},
 		{
-			name: 'Write',
-			link: '/write',
-			loadComponent: true,
-		},
-		{
 			name: 'Login',
 			call: 'login',
 			loadComponent: false,
@@ -50,6 +45,11 @@ export default {
 		{
 			name: 'FAQs',
 			link: 'faqs',
+			loadComponent: true,
+		},
+		{
+			name: 'Write',
+			link: '/write',
 			loadComponent: true,
 		},
 		{

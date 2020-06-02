@@ -1,5 +1,6 @@
 import React from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
+import ImageUploader from 'react-images-upload';
 
 import styles from './Write.module.css';
 
@@ -19,13 +20,26 @@ const MarkdownWrite = (props) => {
             Remove
 					</div>
 				</div>
-				<TextareaAutosize
-					className="w-100"
-					placeholder={'Step ' + (+i + 1)}
-					name="step"
-					onChange={(e) => props.onChange(e, i)}
-					value={props.tutorial.steps[i]}
-				/>
+				<div className="row">
+					<div className="col-9">
+						<TextareaAutosize
+							className="w-100"
+							placeholder={'Step ' + (+i + 1)}
+							name="step"
+							onChange={(e) => props.onChange(e, i)}
+							value={props.tutorial.steps[i]}
+						/>
+					</div>
+					<div className="col-3">
+						<ImageUploader 
+							withIcon={true}
+							buttonText='Choose screenshot'
+							onChange={this}
+							imgExtension={['.jpg', '.gif', '.png', '.gif']}
+							maxFileSize={5242880}
+						/>
+					</div>
+				</div>
 			</React.Fragment>
 		);
 	}

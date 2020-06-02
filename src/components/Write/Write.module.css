@@ -2,6 +2,7 @@ textarea {
   padding: 10px;
   font-family: "ubuntu mono";
   font-size: 20px;
+  min-height: 180px;
 }
 
 .markdown-renderer {
