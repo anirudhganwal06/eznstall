@@ -1,9 +1,9 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 
 import './Write.module.css';
 import MarkdownWrite from './MarkdownWrite';
 import MarkdownRenderer from './MarkdownRenderer';
-import { useFirebase, useFirestore } from 'react-redux-firebase';
+import { useFirebase } from 'react-redux-firebase';
 
 const Write = () => {
 	const reducer = (state, action) => {
@@ -53,18 +53,42 @@ const Write = () => {
 	};
 
 	const [tutorial, dispatch] = useReducer(reducer, initialState);
+	const [loading, setLoading] = useState(false);
 
 	const firebase = useFirebase();
-	const firestore = useFirestore();
+	// const firestore = useFirestore();
+
+	// Util functions
+	const normalToKebabCase = (normal, toLowerCase) => {
+		if (toLowerCase) {
+			return normal.trim().toLowerCase().replace(/\s+/g,'-');
+		}
+		return normal.trim().replace(/\s+/g,'-');
+	};
+
+	const getFileExtension = file => {
+		return file.name.split('.').pop();
+	};
+
+	const getStoragePath = image => {
+		return 'images/' + normalToKebabCase(tutorial.name, true) + '__' + normalToKebabCase(tutorial.version, false) + '__0.' + getFileExtension(image);
+	};
 
 	const publish = async() => {
+		setLoading(true);
 		const storageRef = firebase.storage().ref();
-		const imagesRef = storageRef.child('images/');
 		const image = tutorial.steps[0].image;
-		console.log(image);
-		const snapshot = await imagesRef.put(image);
+		const imageRef = storageRef.child(getStoragePath(image));
+		const snapshot = await imageRef.put(image);
 		console.log(snapshot);
+		setLoading(false);
 	};
+
+	useEffect(() => {
+		if (loading) {
+			document.getElementById('publish-btn').textContent = 'Publishing ...';
+		}
+	}, [loading]);
 
 	return (
 		<React.Fragment>
@@ -87,7 +111,7 @@ const Write = () => {
 						<button className="btn btn-block btn-success">Save as Draft</button>
 					</div>
 					<div className="col-12 my-2">
-						<button className="btn btn-block btn-primary" onClick={publish}>Publish</button>
+						<button id="publish-btn" className="btn btn-block btn-primary" onClick={publish}>Publish</button>
 					</div>
 				</div>
 			</section>
