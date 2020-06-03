@@ -7,12 +7,14 @@ import { useFirebase, useFirestore } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
 
 const Write = () => {
+
+	// Defining reducer for local state manipulation
 	const reducer = (state, action) => {
 		const newSteps = [...state.steps];
 		if (action.type === 'ADD_STEP' || action.type === 'REMOVE_STEP' || action.type === 'CHANGE_STEP' || action.type === 'ADD_IMAGE') {
 			switch(action.type) {
 			case 'ADD_STEP': 
-				newSteps.splice(action.i, 0, {});
+				newSteps.splice(action.i, 0, { markdown: '', image: {} });
 				break;
 			case 'REMOVE_STEP': 
 				newSteps.splice(action.i, 1);
@@ -41,6 +43,7 @@ const Write = () => {
 	
 	};
 
+	// Initial local state
 	const initialState = {
 		name: '',
 		version: '',
@@ -52,6 +55,7 @@ const Write = () => {
 		conclusion: ''
 	};
 
+	// Using hooks
 	const [tutorial, dispatch] = useReducer(reducer, initialState);
 	const [loading, setLoading] = useState(false);
 
@@ -81,6 +85,7 @@ const Write = () => {
 		await imageRef.put(image);
 	};
 
+	// Publish the tutorial
 	const publish = async() => {
 		setLoading(true);
 
@@ -109,6 +114,7 @@ const Write = () => {
 		setLoading(false);
 	};
 
+	// For manipulating the publish button 
 	useEffect(() => {
 		if (loading) {
 			document.getElementById('publish-btn').textContent = 'Publishing ...';
