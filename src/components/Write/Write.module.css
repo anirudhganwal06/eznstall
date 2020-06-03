@@ -17,12 +17,12 @@ input {
 }
 
 .sub-section {
-  background-color: #f8f9fa;
+  background-color: #ffc107;
   padding: 50px;
 }
 
 .sub-section:nth-child(odd) {
-  background-color: #ffc107;
+  background-color: #f8f9fa;
 }
 
 .add-remove-step-container {

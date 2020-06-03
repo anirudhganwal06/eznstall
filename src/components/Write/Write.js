@@ -1,10 +1,12 @@
 import React, { useReducer, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useFirebase, useFirestore } from 'react-redux-firebase';
 
 import './Write.module.css';
 import MarkdownWrite from './MarkdownWrite';
 import MarkdownRenderer from './MarkdownRenderer';
-import { useFirebase, useFirestore } from 'react-redux-firebase';
-import { useSelector } from 'react-redux';
+import getImageStoragePath from '../../utils/getImageStoragePath';
+import toKebabCase from '../../utils/toKebabCase';
 
 const Write = () => {
 
@@ -46,6 +48,7 @@ const Write = () => {
 	// Initial local state
 	const initialState = {
 		name: '',
+		description: '',
 		version: '',
 		introduction: '',
 		steps: [{
@@ -56,32 +59,16 @@ const Write = () => {
 	};
 
 	// Using hooks
-	const [tutorial, dispatch] = useReducer(reducer, initialState);
+	const [installation, dispatch] = useReducer(reducer, initialState);
 	const [loading, setLoading] = useState(false);
 
 	const firebase = useFirebase();
 	const firestore = useFirestore();
 	const auth = useSelector(state => state.firebase.auth);
 
-	// Util functions
-	const normalToKebabCase = (normal, toLowerCase) => {
-		if (toLowerCase) {
-			return normal.trim().toLowerCase().replace(/\s+/g,'-');
-		}
-		return normal.trim().replace(/\s+/g,'-');
-	};
-
-	const getFileExtension = file => {
-		return file.name.split('.').pop();
-	};
-
-	const getStoragePath = (image, stepNumber) => {
-		return 'images/' + normalToKebabCase(tutorial.name, true) + '__' + normalToKebabCase(tutorial.version, false) + '__' + stepNumber + '.' + getFileExtension(image);
-	};
-
 	const uploadImage = async(image, stepNumber) => {
 		const storageRef = firebase.storage().ref();
-		const imageRef = storageRef.child(getStoragePath(image, stepNumber));
+		const imageRef = storageRef.child(getImageStoragePath(installation, image, stepNumber));
 		await imageRef.put(image);
 	};
 
@@ -90,22 +77,22 @@ const Write = () => {
 		setLoading(true);
 
 		// Uploading images of all steps
-		await Promise.all(tutorial.steps.map((step, index) => {
+		await Promise.all(installation.steps.map((step, index) => {
 			return uploadImage(step.image, index);
 		}));
 
 		// Uploading document in Cloud Firestore
-		const tutorialRef = firestore.collection('tutorials').doc(normalToKebabCase(tutorial.name, true));
-		await tutorialRef.set({
-			name: tutorial.name,
-			description: tutorial.description,
-			installationVersions: firestore.FieldValue.arrayUnion(tutorial.version)
+		const installationRef = firestore.collection('installations').doc(toKebabCase(installation.name, true));
+		await installationRef.set({
+			name: installation.name,
+			description: installation.description,
+			installationVersions: firestore.FieldValue.arrayUnion(installation.version)
 		});
-		const versionRef = tutorialRef.collection('installations').doc(tutorial.version);
-		await versionRef.set({
-			introduction: tutorial.introduction,
-			steps: tutorial.steps.map(step => step.markdown),
-			conclusion: tutorial.conclusion,
+		const tutorialRef = installationRef.collection('tutorials').doc(installation.version);
+		await tutorialRef.set({
+			introduction: installation.introduction,
+			steps: installation.steps.map(step => step.markdown),
+			conclusion: installation.conclusion,
 			writer: {
 				name: auth.displayName,
 				uid: auth.uid
@@ -133,13 +120,13 @@ const Write = () => {
 				<div className="row">
 					<div className="col-8">
 						<MarkdownWrite
-							tutorial={tutorial}
+							tutorial={installation}
 							dispatch={dispatch}
 						/>
 						<p className="text-muted">Everything you write above will be rendered as Markdown</p>
 					</div>
 					<div className="col-4">
-						<MarkdownRenderer tutorial={tutorial} />
+						<MarkdownRenderer tutorial={installation} />
 					</div>
 					<div className="col-12 my-2">
 						<button id="publish-btn" className="btn btn-block btn-primary" onClick={publish}>Publish</button>

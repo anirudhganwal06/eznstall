@@ -35,6 +35,13 @@ const MarkdownRenderer = (props) => {
 		<React.Fragment>
 			<b>Preview</b>
 			<div className={styles['markdown-renderer']}>
+				{props.tutorial.name.trim() === '' ? (
+					''
+				) : (
+					<div className={styles['sub-section']}>
+						<h1 className="text-center page-heading">{props.tutorial.name}</h1>
+					</div>
+				)}
 				{props.tutorial.introduction.trim() === '' ? (
 					''
 				) : (

@@ -72,7 +72,7 @@ const Header = () => {
 			<div className={styles['nav-content']}>
 				<Link to="/" className={`${styles['logo']} ${styles.link}`}>
 					<img
-						src="assets/images/eznstall-logo-small.png"
+						src={`${process.env.PUBLIC_URL}/assets/images/eznstall-logo-small.png`}
 						height="20"
 						alt="Logo"
 					/>

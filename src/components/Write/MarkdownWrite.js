@@ -76,6 +76,7 @@ const MarkdownWrite = (props) => {
 				onChange={e => props.dispatch({ type: 'HANDLE_CHANGE', name: 'version', value: e.target.value })}
 				value={props.tutorial.version}
 			/>
+			<h5 className="mt-4">Tutorial</h5>
 			<b>Introduction</b>
 			<TextareaAutosize
 				className="w-100"
