@@ -31,10 +31,7 @@ const Installations = (props) => {
 					onClick={() => props.history.push('/installation')}
 				>
 					<h1>{tutorial.name}</h1>
-					{/* <p>
-          Google Chrome is a cross-platform web browser developed by Google.
-          lorem ipsum dolar
-				</p> */}
+					<p>{tutorial.description}</p>
 				</div>
 			);
 		}
