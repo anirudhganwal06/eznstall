@@ -3,11 +3,11 @@ import React, { useReducer, useEffect, useState } from 'react';
 import './Write.module.css';
 import MarkdownWrite from './MarkdownWrite';
 import MarkdownRenderer from './MarkdownRenderer';
-import { useFirebase } from 'react-redux-firebase';
+import { useFirebase, useFirestore } from 'react-redux-firebase';
+import { useSelector } from 'react-redux';
 
 const Write = () => {
 	const reducer = (state, action) => {
-		console.log(action);
 		const newSteps = [...state.steps];
 		if (action.type === 'ADD_STEP' || action.type === 'REMOVE_STEP' || action.type === 'CHANGE_STEP' || action.type === 'ADD_IMAGE') {
 			switch(action.type) {
@@ -56,7 +56,8 @@ const Write = () => {
 	const [loading, setLoading] = useState(false);
 
 	const firebase = useFirebase();
-	// const firestore = useFirestore();
+	const firestore = useFirestore();
+	const auth = useSelector(state => state.firebase.auth);
 
 	// Util functions
 	const normalToKebabCase = (normal, toLowerCase) => {
@@ -70,23 +71,49 @@ const Write = () => {
 		return file.name.split('.').pop();
 	};
 
-	const getStoragePath = image => {
-		return 'images/' + normalToKebabCase(tutorial.name, true) + '__' + normalToKebabCase(tutorial.version, false) + '__0.' + getFileExtension(image);
+	const getStoragePath = (image, stepNumber) => {
+		return 'images/' + normalToKebabCase(tutorial.name, true) + '__' + normalToKebabCase(tutorial.version, false) + '__' + stepNumber + '.' + getFileExtension(image);
+	};
+
+	const uploadImage = async(image, stepNumber) => {
+		const storageRef = firebase.storage().ref();
+		const imageRef = storageRef.child(getStoragePath(image, stepNumber));
+		await imageRef.put(image);
 	};
 
 	const publish = async() => {
 		setLoading(true);
-		const storageRef = firebase.storage().ref();
-		const image = tutorial.steps[0].image;
-		const imageRef = storageRef.child(getStoragePath(image));
-		const snapshot = await imageRef.put(image);
-		console.log(snapshot);
+
+		// Uploading images of all steps
+		await Promise.all(tutorial.steps.map((step, index) => {
+			return uploadImage(step.image, index);
+		}));
+
+		// Uploading document in Cloud Firestore
+		const tutorialRef = firestore.collection('tutorials').doc(normalToKebabCase(tutorial.name, true));
+		await tutorialRef.set({
+			name: tutorial.name,
+			installationVersions: firestore.FieldValue.arrayUnion(tutorial.version)
+		});
+		const versionRef = tutorialRef.collection('installations').doc(tutorial.version);
+		await versionRef.set({
+			introduction: tutorial.introduction,
+			steps: tutorial.steps.map(step => step.markdown),
+			conclusion: tutorial.conclusion,
+			writer: {
+				name: auth.displayName,
+				uid: auth.uid
+			}
+		});
+
 		setLoading(false);
 	};
 
 	useEffect(() => {
 		if (loading) {
 			document.getElementById('publish-btn').textContent = 'Publishing ...';
+		} else {
+			document.getElementById('publish-btn').textContent = 'Publish';
 		}
 	}, [loading]);
 
@@ -106,9 +133,6 @@ const Write = () => {
 					</div>
 					<div className="col-4">
 						<MarkdownRenderer tutorial={tutorial} />
-					</div>
-					<div className="col-12 my-2">
-						<button className="btn btn-block btn-success">Save as Draft</button>
 					</div>
 					<div className="col-12 my-2">
 						<button id="publish-btn" className="btn btn-block btn-primary" onClick={publish}>Publish</button>
