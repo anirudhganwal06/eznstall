@@ -66,19 +66,22 @@ const Write = () => {
 	const firestore = useFirestore();
 	const auth = useSelector(state => state.firebase.auth);
 
-	const uploadImage = async(image, stepNumber) => {
+	const uploadImage = async(steps, image, stepNumber) => {
 		const storageRef = firebase.storage().ref();
 		const imageRef = storageRef.child(getImageStoragePath(installation, image, stepNumber));
-		await imageRef.put(image);
+		const snapshot = await imageRef.put(image);
+		steps[stepNumber]['image'] = await snapshot.ref.getDownloadURL();
 	};
 
 	// Publish the tutorial
 	const publish = async() => {
 		setLoading(true);
 
+		const steps = [...installation.steps];
+
 		// Uploading images of all steps
 		await Promise.all(installation.steps.map((step, index) => {
-			return uploadImage(step.image, index);
+			return uploadImage(steps, step.image, index);
 		}));
 
 		// Uploading document in Cloud Firestore
@@ -91,7 +94,7 @@ const Write = () => {
 		const tutorialRef = installationRef.collection('tutorials').doc(installation.version);
 		await tutorialRef.set({
 			introduction: installation.introduction,
-			steps: installation.steps.map(step => step.markdown),
+			steps: steps,
 			conclusion: installation.conclusion,
 			writer: {
 				name: auth.displayName,
