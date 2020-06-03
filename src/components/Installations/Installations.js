@@ -5,13 +5,13 @@ import { useSelector } from 'react-redux';
 
 const Installations = (props) => {
 
-	useFirestoreConnect(['tutorials']);
-	const tutorials = useSelector(state => state.firestore.ordered.tutorials);
+	useFirestoreConnect(['installations']);
+	const installations = useSelector(state => state.firestore.ordered.installations);
 
 	// Creating an array of installation summary
 	const installationsJSX = [];
-	if (isLoaded(tutorials)) {
-		for (let tutorial of tutorials) {
+	if (isLoaded(installations)) {
+		for (let installation of installations) {
 			const red = Math.floor(Math.random() * 256);
 			const green = Math.floor(Math.random() * 256);
 			const blue = Math.floor(Math.random() * 256);
@@ -21,17 +21,17 @@ const Installations = (props) => {
 			let randomColor = `rgb(${red}, ${green}, ${blue})`;
 			installationsJSX.push(
 				<div
-					key={tutorial.id}
+					key={installation.id}
 					className={`${styles['installation-summary']} col-7 my-2 ${
 						hsp > 127.5 ? 'text-dark' : 'text-white'
 					}`}
 					style={{
 						backgroundColor: randomColor,
 					}}
-					onClick={() => props.history.push('/installation')}
+					onClick={() => props.history.push('/installation/' + installation.id)}
 				>
-					<h1>{tutorial.name}</h1>
-					<p>{tutorial.description}</p>
+					<h1>{installation.name}</h1>
+					<p>{installation.description}</p>
 				</div>
 			);
 		}
