@@ -59,6 +59,15 @@ const MarkdownWrite = (props) => {
 				onChange={e => props.dispatch({ type: 'HANDLE_CHANGE', name: 'name', value: e.target.value })}
 				value={props.tutorial.name}
 			/>
+			<b>Short description of the software</b>
+			<input
+				className="w-100 mb-0"
+				placeholder="Write something about the software"
+				name="description"
+				onChange={e => props.dispatch({ type: 'HANDLE_CHANGE', name: 'description', value: e.target.value })}
+				value={props.tutorial.description}
+			/>
+			<p className="text-muted">It should be about 1 - 2 lines.</p>
 			<b>Version of the software</b>
 			<input
 				className="w-100"

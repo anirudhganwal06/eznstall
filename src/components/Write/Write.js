@@ -98,6 +98,7 @@ const Write = () => {
 		const tutorialRef = firestore.collection('tutorials').doc(normalToKebabCase(tutorial.name, true));
 		await tutorialRef.set({
 			name: tutorial.name,
+			description: tutorial.description,
 			installationVersions: firestore.FieldValue.arrayUnion(tutorial.version)
 		});
 		const versionRef = tutorialRef.collection('installations').doc(tutorial.version);
