@@ -16,8 +16,9 @@ const MarkdownRenderer = (props) => {
 			// It's OK
 		}
 		tutorialStepsJSX.push(
-			<div key={i} className={`row no-gutters ${styles['sub-section']}`}>
+			<div key={i} className="row no-gutters steps-sub-section">
 				<div className="col-6">
+					<h1>{'Step ' + (+i + 1)}</h1>
 					<ReactMarkdown source={props.tutorial.steps[i].markdown}></ReactMarkdown>
 				</div>
 				<div className="col-6">
@@ -38,14 +39,14 @@ const MarkdownRenderer = (props) => {
 				{props.tutorial.name.trim() === '' ? (
 					''
 				) : (
-					<div className={styles['sub-section']}>
+					<div className="">
 						<h1 className="text-center page-heading">{props.tutorial.name}</h1>
 					</div>
 				)}
 				{props.tutorial.introduction.trim() === '' ? (
 					''
 				) : (
-					<div className={styles['sub-section']}>
+					<div className="steps-sub-section">
 						<ReactMarkdown source={props.tutorial.introduction}></ReactMarkdown>
 					</div>
 				)}
@@ -53,7 +54,7 @@ const MarkdownRenderer = (props) => {
 				{props.tutorial.conclusion.trim() === '' ? (
 					''
 				) : (
-					<div className={styles['sub-section']}>
+					<div className="steps-sub-section">
 						<ReactMarkdown source={props.tutorial.conclusion}></ReactMarkdown>
 					</div>
 				)}

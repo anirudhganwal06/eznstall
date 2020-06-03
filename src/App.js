@@ -16,7 +16,7 @@ function App() {
 				<main>
 					<Route exact path="/" component={Landing} />
 					<Route exact path="/installations" component={Installations} />
-					<Route exact path="/installation" component={Installation} />
+					<Route exact path="/installation/:installationId" component={Installation} />
 					<Route exact path="/write" component={Write} />
 				</main>
 			</div>

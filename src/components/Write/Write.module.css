@@ -16,15 +16,6 @@ input {
   zoom: 0.33;
 }
 
-.sub-section {
-  background-color: #ffc107;
-  padding: 50px;
-}
-
-.sub-section:nth-child(odd) {
-  background-color: #f8f9fa;
-}
-
 .add-remove-step-container {
   position: relative;
   width: 100%;
