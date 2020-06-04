@@ -23,7 +23,6 @@ const Header = () => {
 	};
 
 	const logout = async() => {
-		console.log('logging out');
 		await firebase.logout();
 		history.push('/');
 	};

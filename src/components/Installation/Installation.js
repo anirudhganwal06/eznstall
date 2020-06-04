@@ -32,9 +32,6 @@ const Installation = props => {
 		tutorial = tutorials[version];
 	}
 
-	console.log(installation);
-	console.log(tutorial);
-
 	return (
 		<React.Fragment>
 			<div className="heading-sec">
